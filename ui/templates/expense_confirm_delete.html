@@ -1,0 +1,9 @@
+{% extends 'finances/base.html' %}
+{% block content %}
+<div class="form-container">
+  <h1>Delete Expense?</h1>
+  <form method="post">{% csrf_token %}<button class="btn">Yes, delete</button>
+    <a class="btn" href="{% url 'expense_list' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

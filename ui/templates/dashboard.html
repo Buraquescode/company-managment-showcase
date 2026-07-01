@@ -1,0 +1,123 @@
+{# templates/finances/dashboard.html #}
+{% extends 'finances/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Sales & Finance Dashboard</h1>
+
+<div class="cards">
+  <div class="card">
+    <h3>Total Income</h3>
+    <p>PKR {{ total_income }}</p>
+  </div>
+  <div class="card">
+    <h3>Total Expense</h3>
+    <p>PKR {{ total_expense }}</p>
+  </div>
+  <div class="card">
+    <h3>Net Profit</h3>
+    <p>PKR {{ net_profit }}</p>
+  </div>
+</div>
+
+<div class="chart-container">
+  <h4>Income by Type</h4>
+  <canvas id="incomeChart"></canvas>
+</div>
+<div class="chart-container">
+  <h4>Expense by Type</h4>
+  <canvas id="expenseChart"></canvas>
+</div>
+
+<h2>Projects</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Currency</th>
+      <th>Deadline</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in projects %}
+      <tr>
+        <td>{{ p.client.name }}</td>
+        <td>{{ p.income_type|capfirst }}</td>
+        <td>{{ p.amount }}</td>
+        <td>{{ p.amount.currency }}</td>
+        <td>{{ p.deadline }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">No projects found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Expenses</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in expenses %}
+      <tr>
+        <td>{{ e.title }}</td>
+        <td>{{ e.expense_type|capfirst }}</td>
+        <td>{{ e.amount }}</td>
+        <td>{{ e.date }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">No expenses found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Incomes</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Project</th>
+      <th>Holder</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pay in payments %}
+      <tr>
+        <td>{{ pay.date }}</td>
+        <td>{{ pay.project.title }}</td>
+        <td>{{ pay.amount_holder.name }}</td>
+        <td>{{ pay.amount }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">No incomes recorded.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  const incomeData  = JSON.parse('{{ income_by_type_json|escapejs }}');
+  const expenseData = JSON.parse('{{ expense_by_type_json|escapejs }}');
+
+  function drawChart(id, data) {
+    new Chart(document.getElementById(id), {
+      type: 'pie',
+      data: {
+        labels: Object.keys(data),
+        datasets: [{ data: Object.values(data) }]
+      }
+    });
+  }
+
+  drawChart('incomeChart', incomeData);
+  drawChart('expenseChart', expenseData);
+</script>
+{% endblock %}

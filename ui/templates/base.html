@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Company Dashboard</title>
+  <link rel="stylesheet" href="{% static 'finances/css/style.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">Company</div>
+    <nav>
+      <ul>
+        <li>
+          <a href="{% url 'dashboard' %}"
+             class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'currency_list' %}"
+             class="{% if request.resolver_match.url_name == 'currency_list' %}active{% endif %}">
+            Currencies
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'client_list' %}"
+             class="{% if request.resolver_match.url_name == 'client_list' %}active{% endif %}">
+            Clients
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'project_list' %}"
+             class="{% if request.resolver_match.url_name == 'project_list' %}active{% endif %}">
+            Projects
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'expense_list' %}"
+             class="{% if request.resolver_match.url_name == 'expense_list' %}active{% endif %}">
+            Expenses
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'holder_list' %}"
+             class="{% if request.resolver_match.url_name == 'holder_list' %}active{% endif %}">
+            Amount Holders
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'income_list' %}"
+             class="{% if request.resolver_match.url_name == 'income_list' %}active{% endif %}">
+            Incomes
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'rate_list' %}"
+             class="{% if request.resolver_match.url_name == 'rate_list' %}active{% endif %}">
+            Exchange Rates
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

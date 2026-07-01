@@ -1,0 +1,20 @@
+{% extends 'finances/base.html' %}
+{% block content %}
+<h1>Clients <a class="btn" href="{% url 'client_add' %}">+ Add</a></h1>
+<table class="table">
+  <thead><tr><th>Name</th><th>Category</th><th>Country</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for o in object_list %}
+      <tr>
+        <td>{{ o.name }}</td><td>{{ o.category }}</td><td>{{ o.country }}</td>
+        <td>
+          <a class="btn" href="{% url 'client_edit' o.pk %}">Edit</a>
+          <a class="btn" href="{% url 'client_delete' o.pk %}">Delete</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">No clients.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
